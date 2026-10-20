@@ -1,0 +1,32 @@
+# Local secrets and environment files
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.pub
+
+# Dependencies and system files
+node_modules/
+.DS_Store
+Thumbs.db
+
+# Logs and diagnostics
+*.log
+*.bundle
+deploy-diagnostic.txt
+
+# Local server-access and deployment helpers
+deploy-to-g15.ps1
+deploy-g15.sh
+inspect-g15.ps1
+create-github-deploy-key.ps1
+configure-github-deploy-key.ps1
+sync-github.ps1
+sync-github-safe.ps1
+sync-github-remote.sh
+
+# Local governance notes and captured previews
+PROJECT-REGISTRY.md
+preview-*.jpg
+github-*.jpg
