@@ -1,21 +1,10 @@
 (() => {
-  const customerNav = document.querySelector('[data-nav="客戶管理"]');
   const globalSearch = document.querySelector('#global-search');
   const globalSearchInput = document.querySelector('#global-search-input');
 
-  customerNav.addEventListener('click', () => {
-    customerNav.dataset.nav = '客戶查詢';
-  }, { capture: true });
-
-  customerNav.addEventListener('click', () => {
-    customerNav.dataset.nav = '客戶管理';
-    document.querySelector('#current-page').textContent = '客戶管理';
-    document.querySelector('#page-title').textContent = '客戶管理';
-  });
-
   globalSearch.addEventListener('submit', event => {
     event.preventDefault();
-    customerNav.click();
+    showWorkspaceView('customers');
     document.querySelector('#search').value = globalSearchInput.value.trim();
     page = 1;
     render();
@@ -23,6 +12,6 @@
   });
 
   document.querySelector('#notifications').addEventListener('click', () => {
-    message('通知中心 · 示範模式', '目前顯示 3 則介面示範通知。本原型未連接通知服務，也不會寄信或更新真實帳號狀態。');
+    message('通知中心 · Demo', '3 則虛構通知：專案申請模組已上線、產品需求規格書已完成示範分析、5 位潛在客戶待聯繫。');
   });
 })();
