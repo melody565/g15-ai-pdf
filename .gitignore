@@ -25,6 +25,7 @@ configure-github-deploy-key.ps1
 sync-github.ps1
 sync-github-safe.ps1
 sync-github-remote.sh
+publish-ai-demo.ps1
 
 # Local governance notes and captured previews
 PROJECT-REGISTRY.md
