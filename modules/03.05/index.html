@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI-DEMO · 03.05 表單與輸入驗證</title>
+  <link rel="stylesheet" href="module.css">
+  <link rel="stylesheet" href="module-fixes.css">
+</head>
+<body>
+  <a class="skip" href="#main">跳至主要內容</a>
+  <header class="module-bar">
+    <a href="/" class="brand"><span>A</span>AI-DEMO</a>
+    <div><b>03.05</b><small>表單與輸入驗證</small></div>
+    <span class="session">Demo 工作階段 · PostgreSQL</span>
+  </header>
+  <main id="main">
+    <section class="hero">
+      <div><p class="eyebrow">F02 · TWO-COLUMN FORM</p><h1>專案申請管理</h1><p>左右雙欄申請表、即時驗證與明細金額計算。資料依目前 Demo 工作階段隔離。</p></div>
+      <div class="hero-actions"><button id="reload">重新讀取</button><button id="seed">建立我的 10 筆 Demo 資料</button><button id="create" class="primary">＋ 新增申請</button></div>
+    </section>
+    <div id="flash" role="status" aria-live="polite"></div>
+    <section class="list-card" aria-labelledby="list-title">
+      <div class="list-head"><div><h2 id="list-title">申請紀錄</h2><p id="list-status">載入中…</p></div><label class="list-search">搜尋<input id="list-search" type="search" placeholder="編號、名稱或部門"></label></div>
+      <div class="table-scroll" tabindex="0" role="region" aria-label="可橫向捲動的專案申請表格">
+        <table><thead><tr><th>申請編號</th><th>申請名稱</th><th>部門</th><th>負責人</th><th>狀態</th><th>總計</th><th>版本</th><th>操作</th></tr></thead><tbody id="records"></tbody></table>
+      </div>
+    </section>
+    <section class="prompt-card" aria-labelledby="prompt-title"><div><p class="eyebrow">TEACHING PROMPT</p><h2 id="prompt-title">完整自然語言 Prompt</h2></div><button id="copy-prompt">複製 Prompt</button><pre id="prompt-text">請建立 F02 左右雙欄的「專案申請管理」表單：桌面兩欄、手機單欄，使用白底、青綠色重點與淺灰分區。包含申請基本資料、聯絡資訊、分類與時程、預算稅務、會議方式、1～12 筆明細、備註與確認勾選。即時計算小計、折扣、稅額與總計，先折扣再計稅。對必填、格式、日期、金額與條件欄位做欄位旁錯誤提示；驗證失敗保留輸入。提供新增、查閱、修改、刪除、儲存、取消、重新讀取與 10 筆虛構 Demo 資料，使用 PostgreSQL、使用者隔離與版本衝突檢查，不得假稱失敗操作成功。可替換參數：主題名稱、部門選項、欄位內容、配色、明細上限與 Demo 情境。</pre><div class="prompt-map"><b>指令如何影響畫面</b><ul><li>「左右雙欄」→ 桌面欄位對齊，650px 以下轉單欄。</li><li>「條件欄位」→ 線上／實體與公司／個人即時切換必填內容。</li><li>「先折扣再計稅」→ 金額摘要依小計 → 折扣 → 稅額 → 總計更新。</li><li>「版本衝突」→ 修改與刪除攜帶版本號，409 時保留畫面內容。</li></ul></div></section>
+  </main>
+
+  <dialog id="editor" aria-labelledby="form-title">
+    <form id="application-form" novalidate>
+      <header class="dialog-head"><div><p id="mode-label">新增申請</p><h2 id="form-title">專案申請表</h2></div><button type="button" id="close" aria-label="關閉表單">✕</button></header>
+      <div id="form-alert" role="alert" tabindex="-1"></div>
+      <input id="record-id" type="hidden"><input id="version" type="hidden" value="1">
+      <fieldset><legend>基本資料</legend><div class="form-grid">
+        <label>申請編號<span>*</span><input id="application_no" maxlength="32" autocomplete="off"><small data-error="application_no"></small></label>
+        <label>申請名稱<span>*</span><input id="application_name" maxlength="120"><small data-error="application_name"></small></label>
+        <label>部門<span>*</span><select id="department"><option value="">請選擇</option><option>資訊部</option><option>行銷部</option><option>營運部</option><option>財務部</option><option>人力資源部</option></select><small data-error="department"></small></label>
+        <label>負責人<span>*</span><input id="owner_name" maxlength="40"><small data-error="owner_name"></small></label>
+        <label>Email<span>*</span><input id="email" type="email"><small data-error="email"></small></label>
+        <label>台灣電話<span>*</span><input id="phone" inputmode="tel" placeholder="0912-345-678"><small data-error="phone"></small></label>
+        <label>申請分類<span>*</span><select id="category"><option value="">請選擇</option><option>系統建置</option><option>行銷活動</option><option>設備採購</option><option>教育訓練</option></select><small data-error="category"></small></label>
+        <label>優先程度<span>*</span><select id="priority"><option>一般</option><option>重要</option><option>緊急</option></select><small data-error="priority"></small></label>
+        <label>狀態<span>*</span><select id="status"><option>草稿</option><option>審核中</option><option>已核准</option><option>已退回</option></select><small data-error="status"></small></label>
+        <label>多選標籤<select id="tags" multiple size="3"><option>數位轉型</option><option>客戶體驗</option><option>內部改善</option><option>年度計畫</option></select><small data-error="tags"></small></label>
+      </div></fieldset>
+      <fieldset><legend>時程與會議</legend><div class="form-grid">
+        <label>開始日期<span>*</span><input id="start_date" type="date"><small data-error="start_date"></small></label>
+        <label>結束日期<span>*</span><input id="end_date" type="date"><small data-error="end_date"></small></label>
+        <label>會議方式<span>*</span><select id="meeting_method"><option value="online">線上</option><option value="onsite">實體</option></select><small data-error="meeting_method"></small></label>
+        <label id="meeting-value-label">線上網址<span>*</span><input id="meeting_value" placeholder="https://example.com/meet"><small data-error="meeting_value"></small></label>
+      </div></fieldset>
+      <fieldset><legend>預算與請款</legend><div class="form-grid">
+        <label>幣別<span>*</span><select id="currency"><option>TWD</option><option>USD</option><option>JPY</option></select><small data-error="currency"></small></label>
+        <label>預算<span>*</span><input id="budget" type="number" min="0" max="10000000" step="0.01"><small data-error="budget"></small></label>
+        <label>折扣百分比<input id="discount_percent" type="number" min="0" max="50" step="0.01" value="0"><small data-error="discount_percent"></small></label>
+        <label>稅率<select id="tax_rate"><option value="0">0%</option><option value="5">5%</option><option value="10">10%</option></select><small data-error="tax_rate"></small></label>
+        <label>請款對象<span>*</span><select id="billing_type"><option value="company">公司</option><option value="personal">個人</option></select><small data-error="billing_type"></small></label>
+        <label data-company>發票抬頭<span>*</span><input id="invoice_title" maxlength="120"><small data-error="invoice_title"></small></label>
+        <label data-company>統一編號<span>*</span><input id="tax_id" inputmode="numeric" maxlength="8"><small data-error="tax_id"></small></label>
+      </div></fieldset>
+      <fieldset><legend>申請明細 <small>1～12 筆</small></legend><div class="detail-scroll"><table class="detail-table"><thead><tr><th>說明</th><th>分類</th><th>數量</th><th>單價</th><th></th></tr></thead><tbody id="detail-rows"></tbody></table></div><button type="button" id="add-detail">＋ 新增明細</button><small data-error="details"></small>
+        <div class="totals"><span>小計 <b id="subtotal">0.00</b></span><span>折扣 <b id="discount-total">0.00</b></span><span>稅額 <b id="tax-total">0.00</b></span><span class="grand">總計 <b id="grand-total">0.00</b></span></div>
+      </fieldset>
+      <fieldset><legend>補充與確認</legend><label>備註<textarea id="notes" maxlength="2000" rows="4"></textarea><small><span id="notes-count">0</span> / 2,000</small><small data-error="notes"></small></label><label class="confirm"><input id="confirmed" type="checkbox">我已確認以上內容為本次 Demo 申請資料<span>*</span><small data-error="confirmed"></small></label></fieldset>
+      <footer class="dialog-actions"><button type="button" id="demo-draft">填入虛構 Demo 草稿</button><span></span><button type="button" id="cancel">取消</button><button type="submit" id="save" class="primary">儲存</button></footer>
+    </form>
+  </dialog>
+  <dialog id="confirm-dialog"><h2>刪除申請？</h2><p>刪除後無法從本 Demo 復原。</p><div><button id="delete-cancel">取消</button><button id="delete-confirm" class="danger">確認刪除</button></div></dialog>
+  <script src="module.js"></script>
+</body></html>

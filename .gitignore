@@ -8,6 +8,8 @@
 
 # Dependencies and system files
 node_modules/
+__pycache__/
+*.pyc
 .DS_Store
 Thumbs.db
 
@@ -19,6 +21,7 @@ deploy-diagnostic.txt
 # Local server-access and deployment helpers
 deploy-to-g15.ps1
 deploy-g15.sh
+deploy-0305.sh
 inspect-g15.ps1
 create-github-deploy-key.ps1
 configure-github-deploy-key.ps1
@@ -26,6 +29,8 @@ sync-github.ps1
 sync-github-safe.ps1
 sync-github-remote.sh
 publish-ai-demo.ps1
+inspect-0305.ps1
+inspect-0305-result.txt
 
 # Local governance notes and captured previews
 PROJECT-REGISTRY.md

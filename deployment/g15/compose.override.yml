@@ -1,4 +1,17 @@
 services:
+  app0305:
+    image: ai-demo-g15-app-0305:latest
+    build:
+      context: ./app-0305
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    environment:
+      POSTGRES_HOST: db
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
   web:
     volumes:
       - ./web:/usr/share/nginx/html:ro
