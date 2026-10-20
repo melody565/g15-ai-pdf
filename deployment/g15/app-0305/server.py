@@ -8,7 +8,7 @@ import psycopg
 from psycopg.rows import dict_row
 from psycopg.types.json import Jsonb
 
-GROUP_NAME=os.environ['GROUP_NAME'];SECRET=os.environ['APP_SECRET'].encode();DB=dict(host=os.environ['POSTGRES_HOST'],port=os.environ['POSTGRES_PORT'],dbname=os.environ['POSTGRES_DB'],user=os.environ['POSTGRES_USER'],password=os.environ['POSTGRES_PASSWORD'])
+GROUP_NAME=os.environ['GROUP_NAME'];SECRET=os.environ['APP_SECRET'].encode();DB=dict(host=os.environ['POSTGRES_HOST'],port=os.environ.get('POSTGRES_PORT','5432'),dbname=os.environ['POSTGRES_DB'],user=os.environ['POSTGRES_USER'],password=os.environ['POSTGRES_PASSWORD'])
 FIELDS=['application_no','application_name','department','owner_name','email','phone','category','priority','status','start_date','end_date','currency','budget','tags','meeting_method','meeting_value','discount_percent','tax_rate','billing_type','invoice_title','tax_id','details','subtotal','discount_amount','tax_amount','total','notes','confirmed']
 Q=Decimal('0.01')
 def dec(v):
