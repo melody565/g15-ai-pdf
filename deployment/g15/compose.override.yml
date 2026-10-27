@@ -25,6 +25,19 @@ services:
       db:
         condition: service_healthy
     restart: unless-stopped
+  app0309:
+    image: ai-demo-g15-app-0309:latest
+    build:
+      context: ./app-0309
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    environment:
+      POSTGRES_HOST: db
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
   web:
     volumes:
       - ./web:/usr/share/nginx/html:ro
