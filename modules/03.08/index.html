@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI-DEMO｜03.08 模擬註冊</title>
+  <link rel="stylesheet" href="module.css">
+</head>
+<body>
+  <main class="module-shell">
+    <header class="module-header">
+      <div><p class="eyebrow">AI-DEMO · 03.08</p><h1>帳號、登入與註冊</h1><p>用獨立教學沙盒練習完整帳號生命週期，不會建立或修改正式帳號。</p></div>
+      <div class="header-actions"><span id="sandbox-id">沙盒載入中</span><button id="seed-scenarios" type="button">建立驗收情境</button></div>
+    </header>
+
+    <div id="notice" class="notice" role="status" hidden></div>
+    <div class="workspace">
+      <aside class="status-rail" aria-labelledby="status-title">
+        <p class="rail-label">SANDBOX FLOW</p><h2 id="status-title">目前流程</h2>
+        <ol id="lifecycle">
+          <li data-stage="register"><span>1</span><div><b>填寫註冊</b><small>建立待聯絡驗證申請</small></div></li>
+          <li data-stage="verify"><span>2</span><div><b>聯絡驗證</b><small>Email 或手機簡訊</small></div></li>
+          <li data-stage="review"><span>3</span><div><b>管理者審核</b><small>限教學沙盒角色</small></div></li>
+          <li data-stage="login"><span>4</span><div><b>模擬登入</b><small>核准且未停用才可登入</small></div></li>
+        </ol>
+        <div class="safety-note"><b>隔離說明</b><p>本頁使用專用 Cookie 與 PostgreSQL 資料表。教學管理者不具正式管理權限。</p></div>
+      </aside>
+
+      <section class="main-panel">
+        <nav class="tabs" aria-label="03.08 功能頁簽">
+          <button class="active" data-tab="register" type="button">模擬註冊</button>
+          <button data-tab="verify" type="button">信箱／簡訊驗證</button>
+          <button data-tab="review" type="button">管理者審核</button>
+          <button data-tab="users" type="button">使用者管理</button>
+          <button data-tab="login" type="button">模擬登入</button>
+          <button data-tab="audit" type="button">流程紀錄</button>
+        </nav>
+
+        <section class="tab-panel active" data-panel="register">
+          <div class="panel-heading"><div><span>STEP 01</span><h2>建立模擬註冊申請</h2><p>送出後只會進入待聯絡驗證，不會立即啟用登入。</p></div><button id="fill-demo" class="secondary" type="button">填入虛構 Demo 草稿</button></div>
+          <form id="registration-form" novalidate>
+            <div class="form-grid">
+              <label><span>帳號 *</span><input name="username" autocomplete="off" maxlength="32"><small data-error="username"></small></label>
+              <label><span>姓名 *</span><input name="full_name" autocomplete="name" maxlength="60"><small data-error="full_name"></small></label>
+              <label><span>Email</span><input name="email" type="email" autocomplete="email"><small data-error="email"></small></label>
+              <label><span>手機</span><input name="phone" inputmode="tel" autocomplete="tel"><small data-error="phone"></small></label>
+              <label><span>單位／系所 *</span><input name="organization" maxlength="120"><small data-error="organization"></small></label>
+              <label><span>職稱／身分 *</span><input name="title" maxlength="80"><small data-error="title"></small></label>
+              <label><span>申請角色 *</span><select name="requested_role"><option value="">請選擇</option><option value="student">學生</option><option value="teacher">教師</option><option value="observer">觀察者</option></select><small data-error="requested_role"></small></label>
+              <fieldset><legend>聯絡驗證方式 *</legend><label class="inline"><input name="contact_method" type="radio" value="email" checked> Email 確認函</label><label class="inline"><input name="contact_method" type="radio" value="sms"> 手機簡訊</label><small data-error="contact_method"></small></fieldset>
+              <label class="wide"><span>申請用途 *</span><textarea name="purpose" rows="3" maxlength="1000"></textarea><small data-error="purpose"></small></label>
+              <label><span>密碼 *</span><input name="password" type="password" autocomplete="new-password" maxlength="128"><small data-error="password"></small></label>
+              <label><span>確認密碼 *</span><input name="password_confirm" type="password" autocomplete="new-password" maxlength="128"><small data-error="password_confirm"></small></label>
+            </div>
+            <label class="check-row"><input name="simulate_failure" type="checkbox"><span><b>模擬寄送失敗</b><small>只建立失敗紀錄，不會宣稱已寄出</small></span></label>
+            <label class="check-row"><input name="consent" type="checkbox"><span><b>我了解這是教學沙盒 *</b><small>資料不會建立正式帳號，也不會發送真實 Email 或簡訊</small></span><small data-error="consent"></small></label>
+            <div class="form-actions"><button type="reset" class="secondary">清除</button><button type="submit" class="primary">建立待驗證申請</button></div>
+          </form>
+          <div class="prompt-host"></div>
+        </section>
+
+        <section class="tab-panel" data-panel="verify" hidden><div class="panel-heading"><div><span>STEP 02</span><h2>信箱／簡訊驗證</h2><p>所有寄送均為明確標示的模擬，不會連接真實服務。</p></div><button class="secondary" data-refresh type="button">重新讀取</button></div><div id="verification-list" class="record-list"></div><div class="prompt-host"></div></section>
+        <section class="tab-panel" data-panel="review" hidden><div class="panel-heading"><div><span>STEP 03</span><h2>教學管理者審核</h2><p>核准、退回補件或拒絕只影響目前沙盒。</p></div><button class="secondary" data-refresh type="button">重新讀取</button></div><div id="review-list" class="record-list"></div><div class="prompt-host"></div></section>
+        <section class="tab-panel" data-panel="users" hidden><div class="panel-heading"><div><span>STEP 04</span><h2>沙盒使用者管理</h2><p>停用與啟用不會變更正式帳號。</p></div><button class="secondary" data-refresh type="button">重新讀取</button></div><div id="user-list" class="record-list"></div><div class="prompt-host"></div></section>
+        <section class="tab-panel" data-panel="login" hidden><div class="panel-heading"><div><span>STEP 05</span><h2>模擬登入</h2><p>只有通過聯絡驗證、審核核准且未停用的沙盒使用者可登入。</p></div></div><p class="login-hint">建立驗收情境後，可使用虛構帳號 <code>demo.success</code> 測試成功，或使用 <code>demo.disabled</code> 測試登入被拒；兩者的教學密碼均為 <code>DemoPass123</code>。</p><form id="login-form" class="login-card"><label><span>沙盒帳號</span><input name="username" autocomplete="username"></label><label><span>密碼</span><input name="password" type="password" autocomplete="current-password"></label><button class="primary" type="submit">模擬登入</button><p id="login-result" role="status"></p></form><div class="prompt-host"></div></section>
+        <section class="tab-panel" data-panel="audit" hidden><div class="panel-heading"><div><span>STEP 06</span><h2>流程紀錄</h2><p>紀錄動作結果，不記錄密碼、驗證碼或完整聯絡資料。</p></div><button class="secondary" data-refresh type="button">重新讀取</button></div><div id="audit-list" class="audit-list"></div><div class="prompt-host"></div></section>
+      </section>
+    </div>
+  </main>
+  <script src="module.js"></script>
+</body>
+</html>
