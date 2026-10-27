@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI-DEMO｜03.07 多語言與地區設定</title>
+  <link rel="stylesheet" href="module.css">
+</head>
+<body>
+  <main class="module-shell">
+    <header class="module-header">
+      <div>
+        <p class="eyebrow">AI-DEMO · 03.07</p>
+        <h1>多語言與地區設定</h1>
+        <p>用同一筆虛構訂單，比較介面翻譯、地區格式與時區顯示。所有設定只在本頁記憶體中生效。</p>
+      </div>
+      <span class="demo-badge">前端展示 · 不儲存</span>
+    </header>
+
+    <div class="lesson-layout">
+      <aside class="control-panel" aria-labelledby="control-title">
+        <div class="section-heading">
+          <span>01</span>
+          <div><h2 id="control-title">展示條件</h2><p>控制說明固定使用繁體中文</p></div>
+        </div>
+
+        <div id="presets" class="preset-list" aria-label="四組自然語言條件"></div>
+
+        <div class="settings-grid">
+          <label>
+            <span>預覽介面語言</span>
+            <select id="language-select">
+              <option value="zh-TW">繁體中文（zh-TW）</option>
+              <option value="en-US">English（en-US）</option>
+              <option value="ja-JP">日本語（ja-JP）</option>
+            </select>
+          </label>
+          <label>
+            <span>數字與日期地區</span>
+            <select id="locale-select">
+              <option value="zh-TW">臺灣 · zh-TW</option>
+              <option value="en-US">美國 · en-US</option>
+              <option value="ja-JP">日本 · ja-JP</option>
+            </select>
+          </label>
+          <label>
+            <span>顯示時區</span>
+            <select id="timezone-select">
+              <option value="Asia/Taipei">Asia/Taipei</option>
+              <option value="UTC">UTC</option>
+              <option value="America/Los_Angeles">America/Los_Angeles</option>
+            </select>
+          </label>
+          <label class="switch-row">
+            <span><b>缺譯測試</b><small>移除一個商品名稱，驗證繁中 fallback</small></span>
+            <input id="missing-toggle" type="checkbox" role="switch">
+          </label>
+        </div>
+
+        <section class="explain-box" aria-labelledby="rule-title">
+          <h3 id="rule-title">本頁規則</h3>
+          <ul>
+            <li>介面語言和地區格式分開切換。</li>
+            <li>時間原值保持 UTC，時區只影響顯示。</li>
+            <li>金額保持 TWD 及整數最小單位，不進行換匯。</li>
+            <li>找不到翻譯時使用繁體中文並顯示缺譯標記。</li>
+          </ul>
+        </section>
+      </aside>
+
+      <section class="preview-column" aria-labelledby="preview-heading">
+        <div class="preview-toolbar">
+          <div><span>02</span><div><h2 id="preview-heading">即時訂單預覽</h2><p>左側條件變更後立即更新</p></div></div>
+          <output id="active-config" aria-live="polite"></output>
+        </div>
+
+        <article id="order-preview" class="order-card" lang="zh-TW" dir="ltr"></article>
+
+        <section class="json-panel" aria-labelledby="json-title">
+          <div><h2 id="json-title">原始 JSON</h2><p>切換語言、地區或時區後，下列原始值不會改變。</p></div>
+          <pre id="raw-json"></pre>
+        </section>
+      </section>
+    </div>
+  </main>
+  <script src="translations.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
