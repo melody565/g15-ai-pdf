@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>03 緊湊名冊｜合作項目範例</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="page-shell">
+    <header class="page-header">
+      <div>
+        <p class="eyebrow">UI PRACTICE · 03</p>
+        <h1>合作項目緊湊名冊</h1>
+        <p class="intro">以一致的名冊列快速比較六筆虛構合作項目。資料僅供介面練習。</p>
+      </div>
+      <div class="summary" aria-label="項目摘要">
+        <span><b id="visible-count">6</b> 筆項目</span>
+        <span><b>68%</b> 平均完成度</span>
+      </div>
+    </header>
+
+    <section class="toolbar" aria-label="名冊工具">
+      <label class="search-field">
+        <span>搜尋</span>
+        <input id="search" type="search" placeholder="輸入項目、類型或城市" autocomplete="off">
+      </label>
+      <label>
+        <span>狀態</span>
+        <select id="status-filter">
+          <option value="">全部狀態</option>
+          <option value="進行中">進行中</option>
+          <option value="待確認">待確認</option>
+          <option value="已完成">已完成</option>
+        </select>
+      </label>
+      <label>
+        <span>排序</span>
+        <select id="sort-by">
+          <option value="updated">最近更新</option>
+          <option value="priority">優先程度</option>
+          <option value="progress">完成度</option>
+          <option value="rating">評分</option>
+        </select>
+      </label>
+    </section>
+
+    <section class="roster-card" aria-labelledby="roster-title">
+      <div class="roster-heading">
+        <div>
+          <h2 id="roster-title">合作項目名冊</h2>
+          <p id="result-message" role="status">顯示全部 6 筆虛構資料</p>
+        </div>
+        <span class="demo-label">DEMO DATA</span>
+      </div>
+
+      <div class="column-labels" aria-hidden="true">
+        <span>項目與負責人</span><span>分類資訊</span><span>狀態</span><span>評分</span><span>完成度</span><span>更新</span>
+      </div>
+      <div id="roster" class="roster" aria-live="polite"></div>
+    </section>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
