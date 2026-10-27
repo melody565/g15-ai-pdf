@@ -46,7 +46,7 @@ function demoDraft(){
 }
 function clearErrors(){document.querySelectorAll('[data-error]').forEach(node=>node.textContent='');document.querySelectorAll('.invalid').forEach(node=>node.classList.remove('invalid'))}
 function showErrors(errors={}){clearErrors();Object.entries(errors).forEach(([name,message])=>{const node=document.querySelector(`[data-error="${name}"]`);if(node){node.textContent=message;node.closest('label,fieldset')?.classList.add('invalid')}})}
-function formPayload(form){const data=Object.fromEntries(new FormData(form));return {...data,consent:form.elements.consent.checked,simulate_failure:form.elements.simulate_failure.checked}}
+function formPayload(form){const data=Object.fromEntries(new FormData(form));if(form.elements.consent)data.consent=form.elements.consent.checked;if(form.elements.simulate_failure)data.simulate_failure=form.elements.simulate_failure.checked;return data}
 function validateClient(data){
   const errors={};
   if(!/^[A-Za-z0-9._-]{4,32}$/.test(data.username||''))errors.username='帳號需為 4～32 個英數字及 . _ -。';
